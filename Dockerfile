@@ -1,4 +1,4 @@
-FROM mirrors.tencent.com/todacc/trpc-java-compile:0.2.12
+FROM keking/kkfileview-jdk:latest
 LABEL MAINTAINER="markjrzhang"
 
 ADD server/target/kkFileView-*.tar.gz /opt/
