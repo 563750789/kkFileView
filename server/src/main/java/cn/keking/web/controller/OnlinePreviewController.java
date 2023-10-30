@@ -8,6 +8,7 @@ import cn.keking.service.cache.CacheService;
 import cn.keking.service.impl.OtherFilePreviewImpl;
 import cn.keking.utils.KkFileUtils;
 import cn.keking.utils.WebUtils;
+import com.alibaba.fastjson.JSONObject;
 import fr.opensagres.xdocreport.core.io.IOUtils;
 import io.mola.galimatias.GalimatiasParseException;
 import org.apache.commons.codec.binary.Base64;
@@ -54,7 +55,7 @@ public class OnlinePreviewController {
         this.otherFilePreview = otherFilePreview;
     }
 
-    @GetMapping( "/onlinePreview")
+    @GetMapping("/onlinePreview")
     public String onlinePreview(String url, Model model, HttpServletRequest req) {
 
         String fileUrl;
@@ -69,6 +70,24 @@ public class OnlinePreviewController {
         FilePreview filePreview = previewFactory.get(fileAttribute);
         logger.info("预览文件url：{}，previewType：{}", fileUrl, fileAttribute.getType());
         return filePreview.filePreviewHandle(fileUrl, model, fileAttribute);
+    }
+
+    @GetMapping("/getPicUrls")
+    public String getPicUrls(String url, Model model, HttpServletRequest req) {
+
+        String fileUrl;
+        try {
+            fileUrl = WebUtils.decodeUrl(url);
+        } catch (Exception ex) {
+            String errorMsg = String.format(BASE64_DECODE_ERROR_MSG, "url");
+            return otherFilePreview.notSupportedFile(model, errorMsg);
+        }
+        FileAttribute fileAttribute = fileHandlerService.getFileAttribute(fileUrl, req);
+        model.addAttribute("file", fileAttribute);
+        FilePreview filePreview = previewFactory.get(fileAttribute);
+        logger.info("预览文件url：{}，previewType：{}", fileUrl, fileAttribute.getType());
+        filePreview.filePreviewHandle(fileUrl, model, fileAttribute);
+        return JSONObject.toJSONString((List<String>) model.getAttribute("imgUrls"));
     }
 
     @GetMapping( "/picturesPreview")
