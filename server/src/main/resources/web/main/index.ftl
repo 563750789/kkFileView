@@ -79,7 +79,6 @@
     <#--  接入说明  -->
     <div class="page-header">
         <h1>支持的文件类型</h1>
-        我们一直在扩展支持的文件类型，不断优化预览的效果，如果您有什么建议，欢迎在kk开源社区留意反馈：<a target='_blank' href="https://t.zsxq.com/09ZHSXbsQ">https://t.zsxq.com/09ZHSXbsQ</a>。
     </div>
     <div >
         <ol>
