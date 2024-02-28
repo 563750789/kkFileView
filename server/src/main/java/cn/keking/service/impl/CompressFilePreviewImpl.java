@@ -48,7 +48,7 @@ public class CompressFilePreviewImpl implements FilePreview {
             }
             String filePath = response.getContent();
             try {
-                fileTree = compressFileReader.unRar(filePath, filePassword,fileName);
+                fileTree = compressFileReader.unRar(filePath, filePassword,fileName, fileAttribute);
             } catch (Exception e) {
                 Throwable[] throwableArray = ExceptionUtils.getThrowables(e);
                 for (Throwable throwable : throwableArray) {
@@ -62,7 +62,7 @@ public class CompressFilePreviewImpl implements FilePreview {
             }
             if (!ObjectUtils.isEmpty(fileTree)) {
                 //是否保留压缩包源文件
-                if (ConfigConstants.getDeleteSourceFile()) {
+                if (!fileAttribute.isCompressFile() && ConfigConstants.getDeleteSourceFile()) {
                     KkFileUtils.deleteFileByPath(filePath);
                 }
                 if (ConfigConstants.isCacheEnabled()) {
